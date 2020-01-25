@@ -20,30 +20,14 @@
 						.attr("width", w)
 						.attr("height", h);
 
-      // var rectangle = svg.append("rect")
-      //     	.data(dataset)
-      //     	.enter()
-      //     	//.append("rect")
-			// 			.attr("x", function(d, i) {return (i*200) + ((d*10)/2) +25;})
-			// 			.attr("y", function(d){return h/2 - (d*10)/2})
-			// 			.attr("width", function(d){return (d*10);})
-			// 			.attr("height", function(d){return (d*10);});
-			//
-			// var circles = svg.append("circle")
-			// 			.data(dataset)
-			// 			.enter()
-			// 			//.append("circle");
-			// 			.attr("cx", function(d, i) {return (i * 50) + 25;})
-			// 			.attr("cy", h/2)
-			// 			.attr("r", function(d) {return d;});
-
 			var wheelL = svg.append("circle")
 						.attr("cx", 300)
 						.attr("cy", 750)
 						.attr("r", 50)
 						.attr("fill", "gray")
 						.attr("stroke", "black")
-						.attr("stroke-width", 35);
+						.attr("stroke-width", 35)
+            .attr("transform", "translate(220,400) scale(1, -1)");
 			var wheelR = svg.append("circle")
 						.attr("cx", 1200)
 						.attr("cy", 750)
@@ -132,49 +116,3 @@
       </script>
   </body>
 </html>
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>D3: Drawing SVG circles with data</title>
-		<script type="text/javascript" src="../d3.js"></script>
-		<style type="text/css">
-			/* No style rules here yet */
-		</style>
-	</head>
-	<body>
-		<script type="text/javascript">
-
-			//Width and height
-			var w = 500;
-			var h = 50;
-
-			//Data
-			var dataset = [ 5, 10, 15, 20, 25 ];
-
-			//Create SVG element
-			var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
-
-			var circles = svg.selectAll("circle")
-			    .data(dataset)
-			    .enter()
-			    .append("circle");
-
-			circles.attr("cx", function(d, i) {
-						return (i * 50) + 25;
-					})
-				   .attr("cy", h/2)
-				   .attr("r", function(d) {
-						return d;
-				   });
-
-		</script>
-	</body>
-</html> -->
