@@ -29,7 +29,7 @@
 						.attr("stroke-width", 35)
             .attr("active", "false")
             .on("click", function() {
-              var c = d3.select(this)
+              var c = d3.select(this);
 
               if (c.attr("active") == "false") {
                 var rotate1 = setInterval(function() { rotate(c); }, 30);
