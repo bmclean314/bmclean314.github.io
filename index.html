@@ -26,20 +26,7 @@
 						.attr("r", 50)
 						.attr("fill", "gray")
 						.attr("stroke", "black")
-						.attr("stroke-width", 35)
-            .attr("active", "false")
-            .on("click", function() {
-              var c = d3.select(this);
-
-              if (c.attr("active") == "false") {
-                var rotate1 = setInterval(function() { rotate(c); }, 30);
-                c.attr("intervalId",rotate1);
-                c.attr("active","true")
-              } else {
-                c.attr("active","false")
-                clearInterval(c.attr("intervalId"));
-              }
-            });
+						.attr("stroke-width", 35);
 			var wheelR = svg.append("circle")
 						.attr("cx", 1200)
 						.attr("cy", 750)
