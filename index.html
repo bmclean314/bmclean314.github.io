@@ -133,7 +133,11 @@
                   var c = d3.select(this)
 
                   if (c.attr("active")){
-                    c.style("fill-opacity", ".2");
+                    c.style("fill-opacity", "0");
+                    c.attr("active", "false")
+                  } else{
+                    c.style("fill-opacity", "1");
+                    c.attr("active", "true");
                   }
                   // Determine if current line is visible
                   // var active = false; //dummy
