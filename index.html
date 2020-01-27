@@ -130,15 +130,25 @@
             // });
       var click = d3.select("polygon")
             .on("click", function(){
-                  alert("hello");
-                  // var c = d3.select(this)
-                  // // Determine if current line is visible
-                  // var active   = c.attr("active") ? false : true;
-                  // var newOpacity = active ? 0 : 1;
-                  // // Hide or show the elements
-                  // c.style("opacity", newOpacity);
-                  // // Update whether or not the elements are active
-                  // c.attr("active", active);
+                  var c = d3.select(this)
+                  // Determine if current line is visible
+                  var active = false; //dummy
+                  if (c.attr("active")){
+                    active = false;
+                  } else {
+                    active = true;
+                  }
+
+                  var newOpacity = 1 //dummy
+                  if (active){
+                    newOpacity = 0;
+                  } else{
+                    newOpacity = 1;
+                  }
+                  // Hide or show the elements
+                  c.style("opacity", newOpacity);
+                  // Update whether or not the elements are active
+                  c.attr("active", active);
             });
 
 
