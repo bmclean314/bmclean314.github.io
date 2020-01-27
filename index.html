@@ -113,15 +113,17 @@
       var beam = svg.append("polygon")
             .attr("points", "1350,650 1650,550 1650,750")
             .attr("fill", "yellow")
+            .attr("active", "false")
+            .style("fill-opacity", "0.1")
             .on("click", function(){
 		            // Determine if current line is visible
-		            var active   = beam.active ? false : true ,
+		            var active   = this.attr("active") ? false : true ,
 		                newOpacity = active ? 0 : 1;
 		            // Hide or show the elements
-		            d3.select("#beam").style("opacity", newOpacity);
+		            d3.select(this).style("opacity", newOpacity);
 		            // Update whether or not the elements are active
-		            beam.active = active;
-            });    
+		            this.attr("active") = active;
+            });
 
 
       </script>
