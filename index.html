@@ -115,7 +115,7 @@
       var beam = svg.append("polygon")
             .attr("points", "1350,650 1650,550 1650,750")
             .attr("fill", "yellow")
-            .attr("active", "false")
+            .attr("active", "true")
             .style("pointer-events","visible")
             .style("fill-opacity", "1");
             // .on("click", function(){
@@ -132,7 +132,9 @@
             .on("click", function(){
                   var c = d3.select(this)
 
-                  c.attr("fill", "red");
+                  if (c.attr("active")){
+                    c.attr("fill", "red");
+                  }
                   // // Determine if current line is visible
                   // var active = false; //dummy
                   // if (c.attr("active")){
