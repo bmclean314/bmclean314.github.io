@@ -113,7 +113,8 @@
       var beam = svg.append("polygon")
             .attr("points", "1350,650 1650,550 1650,750")
             .attr("fill", "yellow")
-            .attr("active", "false")
+            .attr("active", "false
+            .style("pointer-events","visible")
             .style("fill-opacity", "0.1");
             // .on("click", function(){
             //     var c = d3.select(this)
