@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<style>
+.grid line {
+  stroke: white;
+}
+.axisGray line{
+  stroke: #e1e1e1;
+}
+.axisGray path{
+  stroke: #e1e1e1;
+}
+</style>
+
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 20, bottom: 30, left: 50},
+	width = 600 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+	.append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.style("background-color", "#e1e1e1")
+	.append("g")
+		.attr("transform",
+		      "translate(" + margin.left + "," + margin.top + ")");
+
+		//Read the data
+		d3.csv("/cars-sample.csv", function(data) {
+
+		  // Add X axis
+		  var x = d3.scaleLinear()
+		    .domain([1500, 5000])
+		    .range([ 0, width ]);
+		  svg.append("g")
+				.attr("class", "axisGray")
+		    .attr("transform", "translate(0," + height + ")")
+		    .call(d3.axisBottom(x).ticks(4));
+
+		  // Add Y axis
+		  var y = d3.scaleLinear()
+		    .domain([10, 45])
+		    .range([ height, 0]);
+		  svg.append("g")
+				.attr("class", "axisGray")
+		    .call(d3.axisLeft(y).ticks(4));
+
+		  // Add a scale for bubble size
+		  var z = d3.scaleLinear()
+		    .domain([1500, 30000])
+		    .range([ 1, 40]);
+
+				// Add a scale for bubble color
+  		var myColor = d3.scaleOrdinal()
+    		.domain(["bmw", "ford", "honda", "mercedes", "toyota"])
+				.range(["#ff0000", "#c1ab4e", "#40d213", "#20b4d4", "#9f40e1"]);
+
+			function gridlines() {
+				 return d3.axisLeft(y).ticks(5);
+			}
+			function gridlines2() {
+				 return d3.axisBottom(x).ticks(8);
+			}
+
+			svg.append("g")
+    		.attr("class", "grid")
+    		//.attr("transform", "translate(0," + width + ")")
+				//.style("stroke-dasharray",("3,3"))
+    		.call(gridlines()
+        	.tickSize(-width)
+        	.tickFormat(""));
+
+			svg.append("g")
+				.attr("class", "grid")
+				.attr("transform", "translate(0," + height + ")")
+				//.style("stroke-dasharray",("3,3"))
+				.call(gridlines2()
+					.tickSize(-height)
+					.tickFormat(""));
+
+		  // Add dots
+			svg.append('g')
+		    .selectAll("dot")
+		    .data(data)
+		    .enter()
+		    .append("circle")
+		      .attr("cx", function (d) { return x(d.Weight); } )
+		      .attr("cy", function (d) {
+						if (isNaN(d.MPG)){
+							return -100;
+						} else {
+							return y(d.MPG);
+						}
+				 } )
+		      .attr("r", function (d) { return z(d.Weight); } )
+					.style("fill", function (d) { return myColor(d.Manufacturer); } )
+		      //.style("fill", "#69b3a2")
+		      .style("opacity", "0.5");
+
+					svg.append("text")
+					    .attr("text-anchor", "middle")
+					    .attr("x", width/2)
+					    .attr("y", height + margin.top + 20)
+					    .text("Weight");
+
+				svg.append("text")
+			    .attr("text-anchor", "middle")
+			    .attr("transform", "rotate(-90)")
+			    .attr("y", -margin.left+20)
+			    .attr("x", -margin.top-200)
+			    .text("MPG")
+
+		});
+
+</script>
