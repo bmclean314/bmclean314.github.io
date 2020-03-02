@@ -1,0 +1,25 @@
+code,accident,male,female,totals,type
+V01-V09,Pedestrian injured in transport accident,401,203,604,Transport
+V10-V19,Cyclist in transport accident,102,16,118,Transport
+V20-V29,Motorcyclist in transport accident,450,27,477,Transport
+V40-V49,Car occupant injured in transport accident,759,352,1111,Transport
+V90-V94,Water transport accidents,23,6,29,Transport
+V95-V97,Air and space transport accidents,21,0,21,Transport
+W10,Fall on and from stairs and steps,349,293,642,Falling
+W11,Fall on and from ladder,56,4,60,Falling
+W13,Fall from out of or through building/structure,87,25,112,Falling
+W15,Fall from cliff,4,1,5,Falling
+W20,Struck by falling object,33,5,38,Other
+W65,In bath tub,11,11,22,Suffocation
+W67,Drowning in swimming pool,1,0,1,Suffocation
+W69,Drowning in natural water,47,3,50,Nature
+W75,Accidental suffocation in bed,9,2,11,Suffocation
+W76,Accidental hanging/strangulation,185,68,253,Suffocation
+W78,Inhalation of stomach contents,55,53,108,Suffocation
+W79,Inhalation and ingestion of food,94,82,176,Suffocation
+X00-X09,Exposure to smoke fire and flames,160,122,282,Nature
+X31,Exposure to excessive natural cold,40,68,108,Nature
+X42,Exposure to narcotics and hallucinogens,472,108,580,Overdose
+X45,Accidental alcohol poisoning,123,47,170,Overdose
+X53,Lack of food,2,3,5,Medical
+Y40-Y84,Complications of medical and surgical care,176,190,366,Medical

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+/* .grid line {
+  stroke: white;
+} */
+.axisGray line{
+  stroke: #e1e1e1;
+}
+.axisGray path{
+  stroke: #e1e1e1;
+}
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+</style>
+<svg width="960" height="500"></svg>
+<script>
+
+var margin = {top: 10, right: 20, bottom: 30, left: 250};
+//   	width = 960 - margin.left - margin.right,
+//     height = 500 - margin.top - margin.bottom;
+
+d3.csv("/accidentdeaths.csv", function(error, data) {
+
+  //make svg
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+  //sort data
+  data.sort(function(a, b) {
+    return a["totals"]-b["totals"];
+  })
+
+
+  if (error)throw error;
+
+
+
+  //start making axes
+  var y = d3.scaleBand()
+            .range([height, 0])
+            .padding(0.1);
+  var x = d3.scaleLinear()
+            .range([0, width]);
+
+  y.domain(data.map(function(d) { return d.accident; }));
+  x.domain([0, 1250]);
+
+  //gridlines
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .attr("class", "axisGray")
+      .call(d3.axisBottom(x)
+      .ticks(5)
+      .tickSize(-height));
+
+  var myColor = d3.scaleOrdinal()
+      		.domain(["Transport", "Falling", "Overdose", "Suffocation", "Nature", "Medical", "Other"])
+  				.range(["#4e79a7", "#59a14f", "#9c755f", "#f28e2b", "#edc948", "#e15759", "#b07aa1"]);
+  var tabcolor = d3.scaleOrdinal(d3.schemeCategory10);
+
+  var bars = svg.selectAll("rect")
+     .data(data)
+     .enter()
+     .append("rect")
+     .attr("width", function(d) {return x(d.totals); } )
+     .attr("y", function(d) { return y(d.accident); })
+     .attr("height", y.bandwidth())
+     .style("fill", function(d) { return myColor(d.type); });
+
+     // add the y Axis
+     svg.append("g")
+         //.attr("transform", "translate(0," + (width) + ")")
+         .call(d3.axisLeft(y)
+         .ticks(3));
+
+  bars.on("mouseover", function() {
+    d3.select(this)
+      .style("opacity", function(d){
+          // console.log(d);
+          highlightslice(d);
+          return .5;
+      });
+  }).on("mouseout", function() {
+    d3.select(this)
+        .style("opacity", 1);
+    d3.selectAll("g")
+        .style("opacity", 1);
+  });
+
+function highlightslice(rec){
+  //console.log(rec.type)
+  if (rec.type == "Transport"){
+    //console.log("here")
+    d3.selectAll(".arc")
+      .filter(function(d) { console.log(d); return d.data.type == "Transport"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Falling"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Falling"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Overdose"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Overdose"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Suffocation"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Suffocation"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Nature"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Nature"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Medical"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Medical"; })
+      .style("opacity", .5);
+  }
+  if (rec.type == "Other"){
+    d3.selectAll(".arc")
+      .filter(function(d) { return d.data.type == "Other"; })
+      .style("opacity", .5);
+  }
+}
+
+})// end of csv stuff
+
+///////////////////////////////////////////////////////////
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+//   var svg = d3.select("svg");
+//   var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+//
+//
+// var radius = Math.min(width, height) / 2;
+
+var color = d3.scaleOrdinal(["#4e79a7", "#59a14f", "#9c755f", "#f28e2b", "#edc948", "#e15759", "#b07aa1"]);
+  var tabcolor = d3.scaleOrdinal(d3.schemeCategory10);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.totals; });
+
+var path = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+
+
+var label = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+d3.csv("typetotals.csv", function(d) {
+  d.totals = +d.totals;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  var arc = g.selectAll(".arc")
+    .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+//       .on("mousemove", function(d) {
+//       tooltip.transition().duration(200)
+//           .style("opacity", 0.3);
+//       tooltip.select("div").html(d.data.type + " <br><strong>" + d.data.totals + "</strong>")
+//           .style("position", "fixed")
+//           .style("text-align", "center")
+//           .style("width", "120px")
+//           .style("height", "45px")
+//           .style("padding", "2px")
+//           .style("font", "12px sans-serif")
+//           .style("background", "lightsteelblue")
+//           .style("border", "0px")
+//           .style("border-radius", "8px")
+//           .style("left", (d3.event.pageX + 15) + "px")
+//           .style("top", (d3.event.pageY - 28) + "px");
+//           d3.select(this)      // make a selection of the parent g
+//   .select("path")    // select the child path element
+//   .transition()      // create a transition for the path
+//   .attr("d", label)// update the path's d attribute
+//   .duration(1000);   // do it slowly.
+// })
+
+
+      // var tooltip = d3.select("body").append("div")
+    	// 		        	   .attr("class", "tooltip")
+    	// 		        	   .style("opacity", 0.5);
+      //
+      // tooltip.append("rect")
+      //   .attr("width", 30)
+      //   .attr("height", 20)
+      //   .attr("fill", "#ffffff")
+      //   .style("opacity", 0.5);
+      //
+      // tooltip.append("div")
+      //   .attr("x", 15)
+      //   .attr("dy", "1.2em")
+      //   .style("text-anchor", "middle")
+      //   .attr("font-size", "1.5em")
+      //   .attr("font-weight", "bold");
+
+  arc.append("path")
+      .attr("d", path)
+      .attr("fill", function(d) { return color(d.data.type); });
+
+  arc.append("text")
+      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+      .attr("dy", "0.35em")
+      .text(function(d) { return d.data.type; });
+
+  arc.on("mouseover", function() {
+      d3.select(this)
+        .style("opacity", function(d){
+          //console.log(d);
+          highlightrect(d);
+          return .5;
+        });
+    }).on("mouseout", function() {
+      d3.select(this)
+        .style("opacity", 1);
+      d3.selectAll("rect")
+        .style("opacity", 1);
+    });
+
+    function highlightrect(slice){
+      if (slice.data.type == "Transport"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Transport"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Falling"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Falling"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Overdose"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Overdose"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Suffocation"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Suffocation"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Nature"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Nature"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Medical"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Medical"; })
+          .style("opacity", .5);
+      }
+      if (slice.data.type == "Other"){
+        d3.selectAll("rect")
+          .filter(function(d) { return d.type == "Other"; })
+          .style("opacity", .5);
+      }
+    }
+
+
+
+})
+
+</script>
