@@ -2,13 +2,13 @@
 
 For this assignment, I chose to remix a visualization that I used for my week 7 reflection. The original visualization is shown here:
 
-![origvis](img/<origvis.>)
+![origvis](<origvis.png>)
 
 The vis uses a bar and pie chart to show the most common causes of accidental death in England and Wales in 2008.
 The original creater of the vis used Microsoft Excel and photoshop to make it. I thought it would be interesting to remix this vis
 and make it interactive so you could easily see what categories of the pie chart match to the bars of the bar chart. My remix is shown below: 
 
-![myvis](img/<myvis.>)
+![myvis](<Screen Shot 2020-03-02 at 11.10.25 AM.png>)
 
 I changed the vis so when you mouseover a slice of the pie chart, all the bars of the bar chart belonging to that category get highlighted.
 I also did it the other way around, so when the user hovers over a bar, the corresponding slice highlights. 
